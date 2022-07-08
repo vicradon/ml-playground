@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: product-recommendation-
+spec:
+  entrypoint: product-recommender
+  templates:
+    - name: product-recommender
+      dag:
+        tasks:
+        - name: preprocess
+          template: preprocess
+        - name: training
+          template: training
+          dependencies: [preprocess]
+        - name: register
+          template: register
+          dependencies: [training]
+    - name: preprocess
+      container:
+        command: [python]
+        image: vicradon/recommender-preprocess:latest
+        imagePullPolicy: Always
+    - name: training
+      container:
+        command: [python]
+        image: vicradon/recommender-train:latest
+        imagePullPolicy: Always
+    - name: register
+      container:
+        command: [python]
+        image: vicradon/recommender-register:latest
+        imagePullPolicy: Always
