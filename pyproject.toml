@@ -8,6 +8,7 @@ authors = ["Osinachi Chukwujama  <Osinachi.Chukwujama@gmail.com>"]
 python = "^3.8"
 kfp = "^1.8.12"
 argo-workflows = "^6.3.8"
+Pillow = "^9.2.0"
 
 [tool.poetry.dev-dependencies]
 

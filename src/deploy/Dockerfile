@@ -1,9 +1,11 @@
-FROM mcr.microsoft.com/azure-cli
-RUN az extension add -n azure-cli-ml
-RUN pip install --upgrade pip
-COPY deploymentconfig.json /scripts/deploymentconfig.json
-COPY inferenceconfig.json /scripts/inferenceconfig.json
-COPY deploy.sh /scripts/deploy.sh
-COPY score.py /scripts/score.py
-COPY environment.yml /scripts/environment.yml
-CMD bash
+FROM python:3.7-slim
+
+# pip install
+COPY requirements.txt /scripts/requirements.txt
+RUN pip install -r /scripts/requirements.txt
+
+# only for local testing
+COPY register.py /scripts/register.py
+
+# will be overwritten by kf pipeline
+ENTRYPOINT [ "python", "/scripts/register.py" ]
